@@ -1,0 +1,185 @@
+﻿@using DA_Proyecto
+@{
+    ViewBag.Title = "Donacion";
+
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<div class="alert alert-info">
+    <strong>Mantenimiento de Donaciones</strong>
+</div>
+<hr />
+<input type="button" class="btn btn-primary" value="Agregar Donacion" id="btnAgregarDonacion" />
+<br />
+<br />
+<div class="alert alert-info">
+    <strong>Listado de Donaciones</strong>
+</div>
+<br />
+<div id="divListadoDonacion">
+
+</div>
+<div id="modalDonacion" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Mantenimiento de Donaciones</h4>
+            </div>
+            <div class="modal-body">
+                <label>ID del Beneficiario</label>
+                <input class="form-control" type="text" id="txtBeneficiario" />
+                <label>Descripción</label>
+                <input class="form-control" type="text" id="txtDescripcion" />
+                <label>Tipo de Donacion</label>
+                <input class="form-control" type="text" id="txtTipo" />
+                <label>DNI Donante</label>
+                <input class="form-control" type="text" id="txtDonante" />
+                <label>Cantidad</label>
+                <input class="form-control" type="text" id="txtCantidad" />
+                <label>Fecha de Recojo</label>
+                <input class="form-control" type="text" id="txtRecojo" />
+                <label>Fecha de Entrega</label>
+                <input class="form-control" type="text" id="txtEntrega" />
+                <input type="hidden" id="hidCodDonacion" value="-1" />
+                <input type="hidden" id="hEstado" value="1" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="btnGrabarDonacion" type="button" class="btn btn-primary">Grabar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+
+
+
+    $("#divListadoDonacion").on('click', '.btnEditar', function () {
+        var vCodigo = $(this).attr("data-codigo");
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/Donacion/Editar",
+            data: {
+                codigoDonacion: vCodigo
+            },
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    $("#txtBeneficiario").val(data.idPobreza);
+                    $("#txtDescripcion").val(data.descripcion);
+                    $("#txtCantidad").val(data.cantidad);
+                    $("#hidCodDonacion").val(data.idDonacion);
+                    $("#hEstado").val(data.estado);
+                    $("#txtDonante").val(data.idDonante);
+                    $("#txtTipo").val(data.tipo);
+                    $("#txtRecojo").val(data.fecha_recojo);
+                    $("#txtEntrega").val(data.fecha_entrega);
+                    $("#modalDonacion").modal();
+                } else {
+                    alert("Ocurrió un error al editar la Donacion");
+                }
+            }
+
+        });
+
+    });
+
+    $("#divListadoDonacion").on('click', '.btnEliminar', function () {
+        var vCodigo = $(this).attr("data-codigo");
+
+        if (confirm("¿Esta seguro de eliminar la Donacion?")) {
+
+            $.ajax({
+                type: "POST",
+                url: "/Administrador/Donacion/Eliminar",
+                data: {
+                    codigoDonacion: vCodigo
+                },
+                cache: false,
+                success: function (data) {
+                    if (data) {
+                        alert("Se eliminó correctamente");
+                        CargarListadoDonacion();
+                    } else {
+                        alert("Ocurrió un error al eliminar la Donacion");
+                    }
+                }
+            });
+        }
+    });
+
+    $("#btnGrabarDonacion").click(function () {
+        var vBeneficiario = $("#txtBeneficiario").val();
+        var vDescripcion = $("#txtDescripcion").val();
+        var vCantidad = $("#txtCantidad").val();
+        var vTipo = $("#txtTipo").val();
+        var vCod = $("#hidCodDonacion").val();
+        var vDonante = $("#txtDonante").val();
+        var vEstado = $("#hEstado").val();
+        var vRecojo = $("#txtRecojo").val();
+        var vEntrega = $("#txtEntrega").val();
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/Donacion/Grabar",
+            data: {
+                idDonacion: vCod,
+                idPobreza: vBeneficiario,
+                descripcion: vDescripcion,
+                tipo: vTipo,
+                cantidad: vCantidad,
+                estado: vEstado,
+                recojo: vRecojo,
+                entrega: vEntrega,
+                idDonante: vDonante
+            },
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    alert("Se registró correctamente");
+                    $("#modalDonacion").modal("toggle");
+                    CargarListadoDonacion();
+                } else {
+                    alert("Ocurrió un error al registrar la Donacion");
+                }
+            }
+        });
+    });
+
+
+    $("#btnAgregarDonacion").click(function () {
+        $("#txtBeneficiario").val("");
+        $("#txtDescripcion").val("");
+        $("#txtCantidad").val("");
+        $("#hidCodDonacion").val("-1");
+        $("#hEstado").val("1");
+        $("#txtDonante").val("");
+        $("#txtTipo").val("");
+        $("#txtRecojo").val("");
+        $("#txtEntrega").val("");
+        $("#modalDonacion").modal();
+    });
+
+
+
+    CargarListadoDonacion();
+
+    function CargarListadoDonacion() {
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/Donacion/Listado",
+            cache: false,
+            success: function (data) {
+                if (data != null) {
+                    $("#divListadoDonacion").html(data);
+                } else {
+                    alert("Ocurrió un error en el listado de Directores");
+                }
+            }
+        });
+    }
+</script>

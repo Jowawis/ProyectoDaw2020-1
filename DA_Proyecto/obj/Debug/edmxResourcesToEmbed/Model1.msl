@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ProyectoDawModelStoreContainer" CdmEntityContainer="ProyectoDawEntities">
+    <EntitySetMapping Name="Donacion">
+      <EntityTypeMapping TypeName="ProyectoDawModel.Donacion">
+        <MappingFragment StoreEntitySet="Donacion">
+          <ScalarProperty Name="idDonacion" ColumnName="idDonacion" />
+          <ScalarProperty Name="idPobreza" ColumnName="idPobreza" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+          <ScalarProperty Name="fecha_recojo" ColumnName="fecha_recojo" />
+          <ScalarProperty Name="idDonante" ColumnName="idDonante" />
+          <ScalarProperty Name="fecha_entrega" ColumnName="fecha_entrega" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Donante">
+      <EntityTypeMapping TypeName="ProyectoDawModel.Donante">
+        <MappingFragment StoreEntitySet="Donante">
+          <ScalarProperty Name="idDonante" ColumnName="idDonante" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="fecha" ColumnName="fecha" />
+          <ScalarProperty Name="direccion_recogo" ColumnName="direccion_recogo" />
+          <ScalarProperty Name="region" ColumnName="region" />
+          <ScalarProperty Name="provincia" ColumnName="provincia" />
+          <ScalarProperty Name="distrito" ColumnName="distrito" />
+          <ScalarProperty Name="celular" ColumnName="celular" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Personas_extrema_pobreza">
+      <EntityTypeMapping TypeName="ProyectoDawModel.Personas_extrema_pobreza">
+        <MappingFragment StoreEntitySet="Personas extrema pobreza">
+          <ScalarProperty Name="idPobreza" ColumnName="idPobreza" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="region" ColumnName="region" />
+          <ScalarProperty Name="provincia" ColumnName="provincia" />
+          <ScalarProperty Name="distrito" ColumnName="distrito" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="necesidad" ColumnName="necesidad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Triaje_Digital">
+      <EntityTypeMapping TypeName="ProyectoDawModel.Triaje_Digital">
+        <MappingFragment StoreEntitySet="Triaje Digital">
+          <ScalarProperty Name="idTriaje" ColumnName="idTriaje" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="sexo" ColumnName="sexo" />
+          <ScalarProperty Name="celular" ColumnName="celular" />
+          <ScalarProperty Name="region" ColumnName="region" />
+          <ScalarProperty Name="provincia" ColumnName="provincia" />
+          <ScalarProperty Name="distrito" ColumnName="distrito" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuario_Administrativo">
+      <EntityTypeMapping TypeName="ProyectoDawModel.Usuario_Administrativo">
+        <MappingFragment StoreEntitySet="Usuario Administrativo">
+          <ScalarProperty Name="idAdmin" ColumnName="idAdmin" />
+          <ScalarProperty Name="usuario" ColumnName="usuario" />
+          <ScalarProperty Name="contraseña" ColumnName="contraseña" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

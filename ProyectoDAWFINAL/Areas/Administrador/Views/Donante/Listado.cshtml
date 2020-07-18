@@ -1,0 +1,68 @@
+﻿@using DA_Proyecto;
+@{
+    //ViewBag.Title = "Donante";
+
+    List<Donante> listado = (List<Donante>)ViewBag.ListadoDonante;
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+
+<table id="DonanteTable" class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nombre del donante</th>
+            <th>Apellido del donante</th>
+            <th>DNI del donante</th>
+            <th>Fecha</th>
+            <th>Dirección de recojo</th>
+            <th>Región</th>
+            <th>Provincia</th>
+            <th>Distrito</th>
+            <th>Celular</th>
+            <th>         </th>
+            <th>         </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Donante item in listado)
+        {
+            <tr>
+                <td>@item.idDonante</td>
+                <td>@item.nombre</td>
+                <td>@item.apellido</td>
+                <td>@item.dni</td>
+                <td>@item.fecha</td>
+                <td>@item.direccion_recogo</td>
+                <td>@item.region</td>
+                <td>@item.provincia</td>
+                <td>@item.distrito</td>
+                <td>@item.celular</td>
+                <td>
+                    <input type="button"
+                           id="btnEliminar"
+                           data-codigo="@item.idDonante"
+                           class="btnEliminar btn btn-danger"
+                           value="Eliminar" />
+                </td>
+                <td>
+                    <input type="button"
+                           id="btnEditar"
+                           data-codigo="@item.idDonante"
+                           class="btnEditar btn btn-warning"
+                           value="Editar" />
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script>
+
+    $('#tbTriaje').DataTable();
+
+</script>

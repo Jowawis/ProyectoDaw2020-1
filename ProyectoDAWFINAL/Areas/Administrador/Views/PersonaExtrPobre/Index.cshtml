@@ -1,0 +1,204 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<div class="alert alert-info">
+    <strong>Registro de personas en extrema pobreza</strong>
+</div>
+
+<hr />
+
+<input type="button" class="btn btn-primary" value="Agregar Persona" id="btnAgregarPersPobr" />
+<br />
+<br />
+<div class="alert alert-info">
+    <strong>Listado de Personas en extrema pobreza</strong>
+</div>
+<br />
+
+<div id="divListadoPersExtrPobre">
+
+</div>
+
+<!--MODAL-->
+<div id="modalAgregarPersPobre" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Mantenimiento personas</h4>
+            </div>
+            <div class="modal-body">
+                <label>Nombre Persona Pobre</label>
+                <input class="form-control" type="text" id="textNombrePerExtrPob" />
+
+                <label>Apellido Persona Pobre</label>
+                <input class="form-control" type="text" id="textApePerExtrPob" />
+
+                <label>DNI Persona Pobre</label>
+                <input class="form-control" type="text" id="textDniPerExtrPob" />
+
+                <label>Region Persona Pobre</label>
+                <input class="form-control" type="text" id="textRegionPerExtrPob" />
+
+                <label>Provincia Persona Pobre</label>
+                <input class="form-control" type="text" id="textProPerExtrPob" />
+
+                <label>Distrito Persona Pobre</label>
+                <input class="form-control" type="text" id="textDistritoPerExtrPob" />
+
+                <label>Direccion Persona Pobre</label>
+                <input class="form-control" type="text" id="textDirPerExtrPob" />
+
+                <label>Necesidad Persona Pobre</label>
+                <input class="form-control" type="text" id="textNecPerExtrPob" />
+
+                <input type="hidden" id="hiddenIdPobreza" value="-1" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="btnGuardarPer" type="button" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+<!--SCRIPT-->
+<script>
+    //ELIMINAR
+    $("#divListadoPersExtrPobre").on('click', '.btnEliminar', function () {
+        var vidPerPobre = $(this).attr("data-codigo");
+
+        if (confirm("¿Esta seguro de eliminar a la persona?")) {
+            $.ajax({
+            type: "POST",
+            url: "/Administrador/PersonaExtrPobre/Eliminar",
+            data: {
+                CodPobreza: vidPerPobre
+            },
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    alert("La persona se elimino correctamente");
+                    CargarListadoPersonaExtremaPobreza();
+                } else {
+                    alert("Ocurrio un error al eliminar")
+                }
+            }
+        });
+        }
+
+
+    });
+
+    //AGREGAR
+    $("#btnGuardarPer").click(function () {
+        var vidPerPobre = $("#hiddenIdPobreza").val();
+        var vNombrePerPobre = $("#textNombrePerExtrPob").val();
+        var vApellidoPobre = $("#textApePerExtrPob").val();
+        var vDniPobre = $("#textDniPerExtrPob").val();
+        var vRegionPobre = $("#textRegionPerExtrPob").val();
+        var vProvinciaPobre = $("#textProPerExtrPob").val();
+        var vDistritoPobre = $("#textDistritoPerExtrPob").val();
+        var vDireccionPobre = $("#textDirPerExtrPob").val();
+        var vNecesidadPobre = $("#textNecPerExtrPob").val();
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/PersonaExtrPobre/Grabar",
+            data: {
+                nombrePobre: vNombrePerPobre,
+                CodPobreza: vidPerPobre,
+                apePobre: vApellidoPobre,
+                dniPobre: vDniPobre,
+                regPobre: vRegionPobre,
+                provPobre: vProvinciaPobre,
+                distPobre: vDistritoPobre,
+                dirPobre: vDireccionPobre,
+                necesidadPobre: vNecesidadPobre
+            },
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    alert("La persona fue registrada correctamente");
+                    $("#modalAgregarPersPobre").modal("toggle");
+                    CargarListadoPersonaExtremaPobreza();
+                } else {
+                    alert("Ocurrio un error al registrar")
+                }
+            }
+        });
+    });
+
+
+
+
+    //ABRIR MODAL
+    $("#btnAgregarPersPobr").click(function () {
+        $("#textNombrePerExtrPob").val("");
+        $("#hiddenIdPobreza").val("-1");
+        $("#modalAgregarPersPobre").modal();
+    });
+
+
+
+    CargarListadoPersonaExtremaPobreza();
+
+    //CARGAR LISTADO
+    function CargarListadoPersonaExtremaPobreza() {
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/PersonaExtrPobre/Listado",
+            cache: false,
+            success: function (data) {
+                if (data != null) {
+                    $("#divListadoPersExtrPobre").html(data);
+                } else {
+                    alert("Ocurrio un error en el listado")
+                }
+            }
+        });
+    }
+
+     //EDITAR
+    $("#divListadoPersExtrPobre").on('click', '.btnEditar', function () {
+        var vidPerPobre = $(this).attr("data-codigo");
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/PersonaExtrPobre/Editar",
+            data: {
+                CodPobreza: vidPerPobre
+            },
+            cache: false,
+            success: function (data) {
+                if (data) {
+                     $("#hiddenIdPobreza").val(data.idPobreza);
+                     $("#textNombrePerExtrPob").val(data.nombre);
+                     $("#textApePerExtrPob").val(data.apellido);
+                     $("#textDniPerExtrPob").val(data.dni);
+                     $("#textRegionPerExtrPob").val(data.region);
+                     $("#textProPerExtrPob").val(data.provincia);
+                     $("#textDistritoPerExtrPob").val(data.distrito);
+                     $("#textDirPerExtrPob").val(data.direccion);
+                     $("#textNecPerExtrPob").val(data.necesidad);
+                     $("#modalAgregarPersPobre").modal();
+                } else {
+                    alert("Ocurrió un error al editar a la persona");
+                }
+            }
+
+        });
+    });
+
+    
+</script>

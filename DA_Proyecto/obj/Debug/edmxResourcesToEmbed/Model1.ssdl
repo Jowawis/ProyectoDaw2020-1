@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProyectoDawModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Donacion">
+    <Key>
+      <PropertyRef Name="idDonacion" />
+    </Key>
+    <Property Name="idDonacion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idPobreza" Type="int" Nullable="false" />
+    <Property Name="descripcion" Type="varchar" MaxLength="50" />
+    <Property Name="tipo" Type="varchar" MaxLength="50" />
+    <Property Name="cantidad" Type="varchar" MaxLength="50" />
+    <Property Name="estado" Type="varchar" MaxLength="50" />
+    <Property Name="fecha_recojo" Type="datetime" />
+    <Property Name="idDonante" Type="int" Nullable="false" />
+    <Property Name="fecha_entrega" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Donante">
+    <Key>
+      <PropertyRef Name="idDonante" />
+    </Key>
+    <Property Name="idDonante" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="apellido" Type="varchar" MaxLength="50" />
+    <Property Name="dni" Type="varchar" MaxLength="50" />
+    <Property Name="fecha" Type="datetime" />
+    <Property Name="direccion_recogo" Type="varchar" MaxLength="50" />
+    <Property Name="region" Type="varchar" MaxLength="50" />
+    <Property Name="provincia" Type="varchar" MaxLength="50" />
+    <Property Name="distrito" Type="varchar" MaxLength="50" />
+    <Property Name="celular" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Personas extrema pobreza">
+    <Key>
+      <PropertyRef Name="idPobreza" />
+    </Key>
+    <Property Name="idPobreza" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="apellido" Type="varchar" MaxLength="50" />
+    <Property Name="dni" Type="varchar" MaxLength="50" />
+    <Property Name="region" Type="varchar" MaxLength="50" />
+    <Property Name="provincia" Type="varchar" MaxLength="50" />
+    <Property Name="distrito" Type="varchar" MaxLength="50" />
+    <Property Name="direccion" Type="varchar" MaxLength="50" />
+    <Property Name="necesidad" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Triaje Digital">
+    <Key>
+      <PropertyRef Name="idTriaje" />
+    </Key>
+    <Property Name="idTriaje" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" />
+    <Property Name="apellido" Type="varchar" MaxLength="50" />
+    <Property Name="dni" Type="varchar" MaxLength="50" />
+    <Property Name="sexo" Type="varchar" MaxLength="50" />
+    <Property Name="celular" Type="varchar" MaxLength="50" />
+    <Property Name="region" Type="varchar" MaxLength="50" />
+    <Property Name="provincia" Type="varchar" MaxLength="50" />
+    <Property Name="distrito" Type="varchar" MaxLength="50" />
+    <Property Name="direccion" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Usuario Administrativo">
+    <Key>
+      <PropertyRef Name="idAdmin" />
+    </Key>
+    <Property Name="idAdmin" Type="int" Nullable="false" />
+    <Property Name="usuario" Type="varchar" MaxLength="50" />
+    <Property Name="contraseña" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Donacion_Donante">
+    <End Role="Donante" Type="Self.Donante" Multiplicity="1" />
+    <End Role="Donacion" Type="Self.Donacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Donante">
+        <PropertyRef Name="idDonante" />
+      </Principal>
+      <Dependent Role="Donacion">
+        <PropertyRef Name="idDonante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Donacion_Personas extrema pobreza">
+    <End Role="Personas extrema pobreza" Type="Self.Personas extrema pobreza" Multiplicity="1" />
+    <End Role="Donacion" Type="Self.Donacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Personas extrema pobreza">
+        <PropertyRef Name="idPobreza" />
+      </Principal>
+      <Dependent Role="Donacion">
+        <PropertyRef Name="idPobreza" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ProyectoDawModelStoreContainer">
+    <EntitySet Name="Donacion" EntityType="Self.Donacion" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Donante" EntityType="Self.Donante" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Personas extrema pobreza" EntityType="Self.Personas extrema pobreza" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Triaje Digital" EntityType="Self.Triaje Digital" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuario Administrativo" EntityType="Self.Usuario Administrativo" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Donacion_Donante" Association="Self.FK_Donacion_Donante">
+      <End Role="Donante" EntitySet="Donante" />
+      <End Role="Donacion" EntitySet="Donacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Donacion_Personas extrema pobreza" Association="Self.FK_Donacion_Personas extrema pobreza">
+      <End Role="Personas extrema pobreza" EntitySet="Personas extrema pobreza" />
+      <End Role="Donacion" EntitySet="Donacion" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

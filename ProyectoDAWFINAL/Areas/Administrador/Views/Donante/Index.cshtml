@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<div class="alert alert-info">
+    <strong>Mantenimiento de Donantes</strong>
+</div>
+<hr />
+<input type="button" class="btn btn-success" value="Agregar Donante" id="btnAgregarDonante" />
+<br />
+<br />
+<div class="alert alert-info">
+    <strong>Listado de Donantes</strong>
+</div>
+<br />
+<div id="divListadoDonante">
+
+</div>
+<div id="modalDonante" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Mantenimiento de Donantes</h4>
+            </div>
+            <div class="modal-body">
+                <label>Nombre del Donante</label>
+                <input class="form-control" type="text" id="txtNombreDonante" />
+                <label>Apellido del Donante</label>
+                <input class="form-control" type="text" id="txtApellidoDonante" />
+                <label>DNI del donante</label>
+                <input class="form-control" type="text" id="txtDniDonante" />
+                <label>Fecha</label>
+                <input class="form-control" type="text" id="txtFecha" />
+                <label>Direccion de Recojo</label>
+                <input class="form-control" type="text" id="txtDireccionRecojo" />
+                <label>Region del Donante</label>
+                <input class="form-control" type="text" id="txtRegionDonante" />
+                <label>Provincia del Donante</label>
+                <input class="form-control" type="text" id="txtProvinciaDonante" />
+                <label>Distrito del Donante</label>
+                <input class="form-control" type="text" id="txtDistritoDonante" />
+                <label>Celular del Donante</label>
+                <input class="form-control" type="text" id="txtCelularDonante" />
+                <input type="hidden" id="hidCodDonante" value="-1" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button id="btnGrabarDonante" type="button" class="btn btn-primary">Grabar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+<script>
+
+
+    $("#divListadoDonante").on('click', '.btnEditar', function () {
+        var vCodigo = $(this).attr("data-codigo");
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/Donante/Editar",
+            data: {
+                codigoDonante: vCodigo
+            },
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    $("#txtNombreDonante").val(data.nombre);
+                    $("#txtApellidoDonante").val(data.apellido);
+                    $("#txtDniDonante").val(data.dni);
+                    $("#txtFecha").val(data.fecha);
+                    $("#txtDireccionRecojo").val(data.direccion_recogo);
+                    $("#txtRegionDonante").val(data.region);
+                    $("#txtProvinciaDonante").val(data.provincia);
+                    $("#txtDistritoDonante").val(data.distrito);
+                    $("#txtCelularDonante").val(data.celular);
+                    $("#hidCodDonante").val(data.idDonante);
+                    $("#modalDonante").modal();
+                } else {
+                    alert("Ocurrió un error al editar al donante");
+                }
+            }
+
+        });
+
+    });
+
+    $("#divListadoDonante").on('click', '.btnEliminar', function () {
+        var vCodigo = $(this).attr("data-codigo");
+
+        if (confirm("¿Esta seguro de eliminar el donante?")) {
+
+            $.ajax({
+                type: "POST",
+                url: "/Administrador/Donante/Eliminar",
+                data: {
+                    codigoDonante: vCodigo
+                },
+                cache: false,
+                success: function (data) {
+                    if (data) {
+                        alert("Se eliminó correctamente");
+                        CargarListadoDonante();
+                    } else {
+                        alert("Ocurrió un error al eliminar el donante");
+                    }
+                }
+            });
+        }
+    });
+
+
+
+
+
+
+    $("#btnGrabarDonante").click(function () {
+        var vNombreDonante = $("#txtNombreDonante").val();
+        var vApellidoDonante = $("#txtApellidoDonante").val();
+        var vDniDonante = $("#txtDniDonante").val();
+        var vFecha = $("#txtFecha").val();
+        var vDireccionRecojo = $("#txtDireccionRecojo").val();
+        var vRegionDonante = $("#txtRegionDonante").val();
+        var vProvinciaDonante = $("#txtProvinciaDonante").val();
+        var vDistritoDonante = $("#txtDistritoDonante").val();
+        var vCelularDonante = $("#txtCelularDonante").val();
+        var vCodDonante = $("#hidCodDonante").val();
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/Donante/Grabar",
+            data: {
+                nombreDonante: vNombreDonante,
+                apellidoDonante: vApellidoDonante,
+                dniDonante: vDniDonante,
+                fecha: vFecha,
+                direccionRecojo: vDireccionRecojo,
+                regionDonante: vRegionDonante,
+                provinciaDonante: vProvinciaDonante,
+                distritoDonante: vDistritoDonante,
+                celularDonante: vCelularDonante,
+                codigoDonante: vCodDonante
+
+            },
+            cache: false,
+            success: function (data) {
+                if (data) {
+                    alert("Se registró correctamente");
+                    $("#modalDonante").modal("toggle");
+                    CargarListadoDonante();
+                } else {
+                    alert("Ocurrió un error al registrar al nuevo Donante");
+                }
+            }
+        });
+    });
+
+
+    $("#btnAgregarDonante").click(function () {
+        $("#txtNombreDonante").val("");
+        $("#txtApellidoDonante").val("");
+        $("#txtDniDonante").val("");
+        $("#txtFecha").val("");
+        $("#txtDireccionRecojo").val("");
+        $("#txtRegionDonante").val("");
+        $("#txtProvinciaDonante").val("");
+        $("#txtDistritoDonante").val("");
+        $("#txtCelularDonante").val("");
+        $("#hidCodDonante").val("-1");
+        $("#modalDonante").modal();
+
+    });
+
+
+
+    CargarListadoDonante();
+
+    function CargarListadoDonante() {
+        $.ajax({
+            type: "POST",
+            url: "/Administrador/Donante/Listado",
+            cache: false,
+            success: function (data) {
+                if (data != null) {
+                    $("#divListadoDonante").html(data);
+                } else {
+                    alert("Ocurrió un error en el listado de Donantes");
+                }
+            }
+        });
+    }
+</script>
+

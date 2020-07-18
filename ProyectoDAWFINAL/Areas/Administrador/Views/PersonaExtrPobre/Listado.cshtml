@@ -1,0 +1,66 @@
+﻿@using DA_Proyecto
+@{
+    List<Personas_extrema_pobreza> listado = (List<Personas_extrema_pobreza>)ViewBag.ListadoPersonaExtremPobre;
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+
+
+<table id="tbPobres" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Dni</th>
+            <th>Region</th>
+            <th>Provincia</th>
+            <th>Distrito</th>
+            <th>Direccion</th>
+            <th>Necesidad</th>
+            <th>         </th>
+            <th>         </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Personas_extrema_pobreza item in listado)
+        {
+            <tr>
+                <td>@item.idPobreza</td>
+                <td>@item.nombre</td>
+                <td>@item.apellido</td>
+                <td>@item.dni</td>
+                <td>@item.region</td>
+                <td>@item.provincia</td>
+                <td>@item.distrito</td>
+                <td>@item.direccion</td>
+                <td>@item.necesidad</td>
+                <td>
+                    <input type="button"
+                           id="btnEliminar"
+                           data-codigo="@item.idPobreza"
+                           class="btnEliminar btn btn-danger"
+                           value="Eliminar" />
+                </td>
+                <td>
+                    <input type="button"
+                           id="btnEditar"
+                           data-codigo="@item.idPobreza"
+                           class="btnEditar btn btn-danger"
+                           value="Editar" />
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+
+    $('#tbPobres').DataTable();
+
+</script>

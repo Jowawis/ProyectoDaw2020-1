@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProyectoDawModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Donacion">
+    <Key>
+      <PropertyRef Name="idDonacion" />
+    </Key>
+    <Property Name="idDonacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idPobreza" Type="Int32" Nullable="false" />
+    <Property Name="descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="cantidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fecha_recojo" Type="DateTime" Precision="3" />
+    <Property Name="idDonante" Type="Int32" Nullable="false" />
+    <Property Name="fecha_entrega" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Donante" Relationship="Self.FK_Donacion_Donante" FromRole="Donacion" ToRole="Donante" />
+    <NavigationProperty Name="Personas_extrema_pobreza" Relationship="Self.FK_Donacion_Personas_extrema_pobreza" FromRole="Donacion" ToRole="Personas_extrema_pobreza" />
+  </EntityType>
+  <EntityType Name="Donante">
+    <Key>
+      <PropertyRef Name="idDonante" />
+    </Key>
+    <Property Name="idDonante" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dni" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fecha" Type="DateTime" Precision="3" />
+    <Property Name="direccion_recogo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="distrito" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Donacion" Relationship="Self.FK_Donacion_Donante" FromRole="Donante" ToRole="Donacion" />
+  </EntityType>
+  <EntityType Name="Personas_extrema_pobreza">
+    <Key>
+      <PropertyRef Name="idPobreza" />
+    </Key>
+    <Property Name="idPobreza" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dni" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="distrito" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="necesidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Donacion" Relationship="Self.FK_Donacion_Personas_extrema_pobreza" FromRole="Personas_extrema_pobreza" ToRole="Donacion" />
+  </EntityType>
+  <EntityType Name="Triaje_Digital">
+    <Key>
+      <PropertyRef Name="idTriaje" />
+    </Key>
+    <Property Name="idTriaje" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dni" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="region" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="provincia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="distrito" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Usuario_Administrativo">
+    <Key>
+      <PropertyRef Name="idAdmin" />
+    </Key>
+    <Property Name="idAdmin" Type="Int32" Nullable="false" />
+    <Property Name="usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="contraseña" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_Donacion_Donante">
+    <End Role="Donante" Type="Self.Donante" Multiplicity="1" />
+    <End Role="Donacion" Type="Self.Donacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Donante">
+        <PropertyRef Name="idDonante" />
+      </Principal>
+      <Dependent Role="Donacion">
+        <PropertyRef Name="idDonante" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Donacion_Personas_extrema_pobreza">
+    <End Role="Personas_extrema_pobreza" Type="Self.Personas_extrema_pobreza" Multiplicity="1" />
+    <End Role="Donacion" Type="Self.Donacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Personas_extrema_pobreza">
+        <PropertyRef Name="idPobreza" />
+      </Principal>
+      <Dependent Role="Donacion">
+        <PropertyRef Name="idPobreza" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ProyectoDawEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Donacion" EntityType="Self.Donacion" />
+    <EntitySet Name="Donante" EntityType="Self.Donante" />
+    <EntitySet Name="Personas_extrema_pobreza" EntityType="Self.Personas_extrema_pobreza" />
+    <EntitySet Name="Triaje_Digital" EntityType="Self.Triaje_Digital" />
+    <EntitySet Name="Usuario_Administrativo" EntityType="Self.Usuario_Administrativo" />
+    <AssociationSet Name="FK_Donacion_Donante" Association="Self.FK_Donacion_Donante">
+      <End Role="Donante" EntitySet="Donante" />
+      <End Role="Donacion" EntitySet="Donacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Donacion_Personas_extrema_pobreza" Association="Self.FK_Donacion_Personas_extrema_pobreza">
+      <End Role="Personas_extrema_pobreza" EntitySet="Personas_extrema_pobreza" />
+      <End Role="Donacion" EntitySet="Donacion" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

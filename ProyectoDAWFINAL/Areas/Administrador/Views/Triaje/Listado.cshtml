@@ -1,0 +1,56 @@
+﻿@using DA_Proyecto
+@{
+    List<Triaje_Digital> listado = (List<Triaje_Digital>)ViewBag.ListadoTriaje;
+
+}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+
+<table id="tbTriaje" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Region</th>
+            <th>Provincia</th>
+            <th>Distrito</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Triaje_Digital item in listado)
+        {
+            <tr>
+                <td>@item.nombre</td>
+                <td>@item.apellido</td>
+                <td>@item.dni</td>
+                <td>@item.region</td>
+                <td>@item.provincia</td>
+                <td>@item.distrito</td>
+                <td>
+                    <input type="button"
+                           id="btnEliminar"
+                           data-codigo="@item.idTriaje"
+                           class="btnEliminar btn btn-danger"
+                           value="Eliminar" />
+                </td>
+                <td>
+                    <input type="button"
+                           id="btnEditar"
+                           data-codigo="@item.idTriaje"
+                           class="btnEditar btn btn-primary"
+                           value="Editar" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    
+        $('#tbTriaje').DataTable();
+    
+</script>
